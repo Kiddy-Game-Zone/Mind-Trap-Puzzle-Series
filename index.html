@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mind Trap Puzzle Series!</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- Base Styles & CSS Variables --- */
+        :root {
+            /* Default Theme (Tricky Teal/Pink) */
+            --bg-color: #E6FFFA; /* teal-50 */
+            --main-container-bg: #ffffff;
+            --main-container-border: #D53F8C; /* pink-600 */
+            --main-container-shadow: #D53F8C;
+            --card-bg: #FFF5F7; /* pink-50 */
+            --card-border: #FBB6CE; /* pink-300 */
+            --card-shadow: #F687B3; /* pink-400 */
+            --choice-bg: #B2F5EA; /* teal-200 */
+            --choice-border: #4FD1C5; /* teal-300 */
+            --choice-text: #234E52; /* teal-900 */
+            --choice-hover-bg: #81E6D9; /* teal-300 */
+            --choice-selected-bg: #38B2AC; /* teal-500 */
+            --choice-selected-border: #2C7A7B; /* teal-700 */
+            --choice-selected-text: #E6FFFA; /* teal-50 */
+            --action-button-text: white;
+            --action-button-border: #B83280; /* pink-700 */
+            --action-button-shadow: #B83280;
+            --action-button-hover-shadow: #97266D; /* pink-800 */
+            --action-button-active-shadow: #B83280;
+            --submit-button-bg: #4FD1C5; /* teal-400 */
+            --submit-button-hover-bg: #38B2AC; /* teal-500 */
+            --submit-button-active-bg: #319795; /* teal-600 */
+            --next-button-bg: #F687B3; /* pink-400 */
+            --next-button-hover-bg: #ED64A6; /* pink-500 */
+            --next-button-active-bg: #D53F8C; /* pink-600 */
+            --reset-button-bg: #63B3ED; /* blue-400 */
+            --reset-button-hover-bg: #4299E1; /* blue-500 */
+            --reset-button-active-bg: #3182CE; /* blue-600 */
+            --result-area-bg: #FFF5F7; /* pink-50 */
+            --result-area-border: #FBB6CE; /* pink-300 */
+            --result-area-shadow: #F687B3; /* pink-400 */
+            --result-text-color: #B83280; /* pink-700 */
+            --twist-text-color: #702459; /* pink-900 */
+            --thinking-text-color: #D53F8C; /* pink-600 */
+            --heading-color: #D53F8C; /* pink-600 */
+            --subheading-color: #2C7A7B; /* teal-700 */
+            --question-text-color: #702459; /* pink-900 */
+            --label-color: #D53F8C;
+            --footer-text-color: #718096; /* gray-600 */
+            --focus-ring-color: var(--submit-button-bg);
+            --theme-selector-bg: #FFF5F7;
+            --theme-selector-border: #FBB6CE;
+            --theme-selector-text: #B83280;
+        }
+
+        /* --- Theme Definitions --- */
+        body[data-theme="ocean-blue"] { --bg-color: #E0F2FE; --main-container-bg: #ffffff; --main-container-border: #075985; --main-container-shadow: #075985; --card-bg: #CFFAFE; --card-border: #67E8F9; --card-shadow: #22D3EE; --choice-bg: #A5F3FC; --choice-border: #67E8F9; --choice-text: #155E75; --choice-hover-bg: #67E8F9; --choice-selected-bg: #22D3EE; --choice-selected-border: #0E7490; --choice-selected-text: #164E63; --action-button-border: #075985; --action-button-shadow: #075985; --action-button-hover-shadow: #075985; --action-button-active-shadow: #075985; --submit-button-bg: #38BDF8; --submit-button-hover-bg: #0EA5E9; --submit-button-active-bg: #0284C7; --next-button-bg: #2DD4BF; --next-button-hover-bg: #14B8A6; --next-button-active-bg: #0D9488; --reset-button-bg: #FB7185; --reset-button-hover-bg: #F43F5E; --reset-button-active-bg: #E11D48; --result-area-bg: #A5F3FC; --result-area-border: #67E8F9; --result-area-shadow: #22D3EE; --result-text-color: #164E63; --twist-text-color: #083344; --thinking-text-color: #155E75; --heading-color: #0C4A6E; --subheading-color: #155E75; --question-text-color: #1E40AF; --label-color: #155E75; --footer-text-color: #0369A1; --focus-ring-color: var(--submit-button-bg); --theme-selector-bg: #A5F3FC; --theme-selector-border: #67E8F9; --theme-selector-text: #155E75; }
+        body[data-theme="forest-green"] { --bg-color: #F0FFF4; --main-container-bg: #ffffff; --main-container-border: #2F855A; --main-container-shadow: #2F855A; --card-bg: #FEFCBF; --card-border: #F6E05E; --card-shadow: #ECC94B; --choice-bg: #C6F6D5; --choice-border: #68D391; --choice-text: #22543D; --choice-hover-bg: #9AE6B4; --choice-selected-bg: #48BB78; --choice-selected-border: #2F855A; --choice-selected-text: #F0FFF4; --action-button-border: #276749; --action-button-shadow: #276749; --action-button-hover-shadow: #22543D; --action-button-active-shadow: #276749; --submit-button-bg: #A3E635; --submit-button-hover-bg: #84CC16; --submit-button-active-bg: #65A30D; --next-button-bg: #4ADE80; --next-button-hover-bg: #22C55E; --next-button-active-bg: #16A34A; --reset-button-bg: #F56565; --reset-button-hover-bg: #E53E3E; --reset-button-active-bg: #C53030; --result-area-bg: #A7F3D0; --result-area-border: #6EE7B7; --result-area-shadow: #34D399; --result-text-color: #047857; --twist-text-color: #064E3B; --thinking-text-color: #065F46; --heading-color: #2F855A; --subheading-color: #276749; --question-text-color: #065F46; --label-color: #276749; --footer-text-color: #718096; --focus-ring-color: var(--submit-button-bg); --theme-selector-bg: #FEFCBF; --theme-selector-border: #F6E05E; --theme-selector-text: #B7791F; }
+        body[data-theme="cosmic-purple"] { --bg-color: #FAF5FF; --main-container-bg: #1E1B4B; --main-container-border: #A78BFA; --main-container-shadow: #A78BFA; --card-bg: #3730A3; --card-border: #C4B5FD; --card-shadow: #A78BFA; --choice-bg: #4338CA; --choice-border: #A78BFA; --choice-text: #EEF2FF; --choice-hover-bg: #5B21B6; --choice-selected-bg: #7C3AED; --choice-selected-border: #C4B5FD; --choice-selected-text: #F5F3FF; --action-button-text: #1E1B4B; --action-button-border: #A78BFA; --action-button-shadow: #A78BFA; --action-button-hover-shadow: #A78BFA; --action-button-active-shadow: #A78BFA; --submit-button-bg: #F472B6; --submit-button-hover-bg: #EC4899; --submit-button-active-bg: #DB2777; --next-button-bg: #A78BFA; --next-button-hover-bg: #8B5CF6; --next-button-active-bg: #7C3AED; --reset-button-bg: #F87171; --reset-button-hover-bg: #EF4444; --reset-button-active-bg: #DC2626; --result-area-bg: #4338CA; --result-area-border: #A78BFA; --result-area-shadow: #A78BFA; --result-text-color: #C4B5FD; --twist-text-color: #EDE9FE; --thinking-text-color: #A78BFA; --heading-color: #EDE9FE; --subheading-color: #C4B5FD; --question-text-color: #DDD6FE; --label-color: #C4B5FD; --footer-text-color: #A78BFA; --focus-ring-color: var(--submit-button-bg); --theme-selector-bg: #4338CA; --theme-selector-border: #A78BFA; --theme-selector-text: #EEF2FF; }
+        body[data-theme="sunny-yellow"] { --bg-color: #FEF9C3; --main-container-bg: #ffffff; --main-container-border: #CA8A04; --main-container-shadow: #CA8A04; --card-bg: #FEF08A; --card-border: #FACC15; --card-shadow: #EAB308; --choice-bg: #FEF3C7; --choice-border: #FDE047; --choice-text: #854D0E; --choice-hover-bg: #FDE047; --choice-selected-bg: #FACC15; --choice-selected-border: #CA8A04; --choice-selected-text: #78350F; --action-button-border: #CA8A04; --action-button-shadow: #CA8A04; --action-button-hover-shadow: #CA8A04; --action-button-active-shadow: #CA8A04; --submit-button-bg: #FB923C; --submit-button-hover-bg: #F97316; --submit-button-active-bg: #EA580C; --next-button-bg: #FACC15; --next-button-hover-bg: #EAB308; --next-button-active-bg: #CA8A04; --reset-button-bg: #F87171; --reset-button-hover-bg: #EF4444; --reset-button-active-bg: #DC2626; --result-area-bg: #FEF3C7; --result-area-border: #FDE047; --result-area-shadow: #EAB308; --result-text-color: #854D0E; --twist-text-color: #713F12; --thinking-text-color: #A16207; --heading-color: #B45309; --subheading-color: #A16207; --question-text-color: #B45309; --label-color: #A16207; --footer-text-color: #B45309; --focus-ring-color: var(--submit-button-bg); --theme-selector-bg: #FEF3C7; --theme-selector-border: #FDE047; --theme-selector-text: #854D0E; }
+        body[data-theme="candy-pink"] { --bg-color: #FDF2F8; --main-container-bg: #ffffff; --main-container-border: #9D174D; --main-container-shadow: #9D174D; --card-bg: #FCE7F3; --card-border: #F9A8D4; --card-shadow: #F472B6; --choice-bg: #FBCFE8; --choice-border: #F9A8D4; --choice-text: #9D174D; --choice-hover-bg: #F9A8D4; --choice-selected-bg: #F472B6; --choice-selected-border: #DB2777; --choice-selected-text: #831843; --action-button-border: #9D174D; --action-button-shadow: #9D174D; --action-button-hover-shadow: #9D174D; --action-button-active-shadow: #9D174D; --submit-button-bg: #A78BFA; --submit-button-hover-bg: #8B5CF6; --submit-button-active-bg: #7C3AED; --next-button-bg: #F472B6; --next-button-hover-bg: #EC4899; --next-button-active-bg: #DB2777; --reset-button-bg: #FB7185; --reset-button-hover-bg: #F43F5E; --reset-button-active-bg: #E11D48; --result-area-bg: #FBCFE8; --result-area-border: #F9A8D4; --result-area-shadow: #F472B6; --result-text-color: #9D174D; --twist-text-color: #831843; --thinking-text-color: #BE185D; --heading-color: #831843; --subheading-color: #BE185D; --question-text-color: #BE185D; --label-color: #BE185D; --footer-text-color: #9D174D; --focus-ring-color: var(--submit-button-bg); --theme-selector-bg: #FBCFE8; --theme-selector-border: #F9A8D4; --theme-selector-text: #9D174D; }
+        body[data-theme="night-mode"] { --bg-color: #111827; --main-container-bg: #1F2937; --main-container-border: #6B7280; --main-container-shadow: #9CA3AF; --card-bg: #374151; --card-border: #9CA3AF; --card-shadow: #D1D5DB; --choice-bg: #4B5563; --choice-border: #9CA3AF; --choice-text: #F9FAFB; --choice-hover-bg: #52525b; --choice-selected-bg: #6B7280; --choice-selected-border: #D1D5DB; --choice-selected-text: #F9FAFB; --action-button-text: #111827; --action-button-border: #9CA3AF; --action-button-shadow: #9CA3AF; --action-button-hover-shadow: #D1D5DB; --action-button-active-shadow: #6B7280; --submit-button-bg: #60A5FA; --submit-button-hover-bg: #3B82F6; --submit-button-active-bg: #2563EB; --next-button-bg: #34D399; --next-button-hover-bg: #10B981; --next-button-active-bg: #059669; --reset-button-bg: #F87171; --reset-button-hover-bg: #EF4444; --reset-button-active-bg: #DC2626; --result-area-bg: #4B5563; --result-area-border: #9CA3AF; --result-area-shadow: #D1D5DB; --result-text-color: #ECFDF5; --twist-text-color: #f0fdf4; --thinking-text-color: #D1D5DB; --heading-color: #F9FAFB; --subheading-color: #E5E7EB; --question-text-color: #E5E7EB; --label-color: #E5E7EB; --footer-text-color: #9CA3AF; --focus-ring-color: var(--submit-button-bg); --theme-selector-bg: #4B5563; --theme-selector-border: #9CA3AF; --theme-selector-text: #F9FAFB; }
+
+        /* --- General Styles --- */
+        html, body { height: 100%; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            display: flex;
+            flex-direction: column;
+            margin: 0;
+            padding-top: 5rem; /* Space for theme selector */
+            position: relative;
+            transition: background-color 0.3s ease;
+            overflow-x: hidden;
+        }
+        main { flex-grow: 1; display: flex; flex-direction: column; align-items: center; }
+
+        .main-container {
+            background-color: var(--main-container-bg);
+            border: 3px solid var(--main-container-border);
+            border-radius: 20px;
+            box-shadow: 8px 8px 0px var(--main-container-shadow);
+            width: 100%;
+            max-width: 48rem; /* Moderate width */
+            margin: 2rem auto 1rem auto; /* Default margin */
+            padding: 1.5rem sm:p-8;
+            text-align: center;
+            flex-shrink: 0;
+            transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        /* Card Styling */
+        .puzzle-card {
+            background-color: var(--card-bg);
+            border: 2px solid var(--card-border);
+            border-radius: 16px;
+            box-shadow: 4px 4px 0px var(--card-shadow);
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        /* Choice Button Styling */
+        .choices-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); /* Responsive grid */
+            gap: 1rem;
+            justify-items: center;
+            margin-top: 1.5rem;
+        }
+        .choice-button {
+            background-color: var(--choice-bg);
+            color: var(--choice-text);
+            border: 2px solid var(--choice-border);
+            border-radius: 12px;
+            padding: 0.7rem 1rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s ease-out;
+            width: 100%;
+            max-width: 180px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            box-shadow: 3px 3px 0px var(--choice-border);
+            min-height: 55px;
+            text-align: center;
+            line-height: 1.3;
+        }
+        .choice-button:hover:not(.selected):not(:disabled) {
+            background-color: var(--choice-hover-bg);
+            transform: translateY(-2px);
+            box-shadow: 4px 4px 0px var(--choice-border);
+        }
+        .choice-button.selected {
+            background-color: var(--choice-selected-bg);
+            border-color: var(--choice-selected-border);
+            color: var(--choice-selected-text);
+            box-shadow: 2px 2px 0px var(--choice-selected-border);
+            transform: translateY(1px);
+            cursor: default;
+        }
+        .choice-button:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            background-color: var(--choice-bg); /* Keep bg */
+            box-shadow: 3px 3px 0px var(--choice-border);
+            transform: none;
+        }
+         .choice-button .text-content { /* Wrapper for text */
+             flex-grow: 1; /* Allow text to take available space */
+             text-align: center;
+             overflow-wrap: break-word; /* Allow long words to break */
+             word-break: break-word; /* Ensure breaking */
+        }
+
+        /* Action Button Styles */
+        .action-button {
+            color: var(--action-button-text); font-weight: 700; padding: 0.8rem 1.8rem; border-radius: 1rem; border: 3px solid var(--action-button-border); box-shadow: 5px 5px 0px var(--action-button-shadow); transition: all 0.15s ease-out; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em; font-size: 1rem; min-width: 120px; transform-style: preserve-3d;
+        }
+        .action-button:hover:not(:disabled) { box-shadow: 6px 6px 0px var(--action-button-hover-shadow); transform: translateY(-3px) translateX(-2px) translateZ(5px); }
+        .action-button:active:not(:disabled) { box-shadow: 2px 2px 0px var(--action-button-active-shadow); transform: translateY(2px) translateX(2px) translateZ(0px); }
+        .action-button:focus { outline: none; box-shadow: 5px 5px 0px var(--action-button-shadow), 0 0 0 3px var(--bg-color), 0 0 0 5px var(--focus-ring-color); }
+        .action-button:disabled { opacity: 0.6; cursor: not-allowed; box-shadow: 5px 5px 0px var(--action-button-shadow); transform: none; }
+
+        #submitBtn { background-color: var(--submit-button-bg); border-color: var(--action-button-border); box-shadow: 5px 5px 0px var(--action-button-shadow); --focus-ring-color: var(--submit-button-bg); }
+        #submitBtn:hover:not(:disabled) { background-color: var(--submit-button-hover-bg); box-shadow: 6px 6px 0px var(--action-button-hover-shadow); }
+        #submitBtn:active:not(:disabled) { background-color: var(--submit-button-active-bg); box-shadow: 2px 2px 0px var(--action-button-active-shadow); }
+
+        #nextBtn { background-color: var(--next-button-bg); border-color: var(--action-button-border); box-shadow: 5px 5px 0px var(--action-button-shadow); --focus-ring-color: var(--next-button-bg); }
+        #nextBtn:hover:not(:disabled) { background-color: var(--next-button-hover-bg); box-shadow: 6px 6px 0px var(--action-button-hover-shadow); }
+        #nextBtn:active:not(:disabled) { background-color: var(--next-button-active-bg); box-shadow: 2px 2px 0px var(--action-button-active-shadow); }
+
+        #resetBtn { background-color: var(--reset-button-bg); border-color: var(--action-button-border); box-shadow: 5px 5px 0px var(--action-button-shadow); --focus-ring-color: var(--reset-button-bg); }
+        #resetBtn:hover { background-color: var(--reset-button-hover-bg); box-shadow: 6px 6px 0px var(--action-button-hover-shadow); }
+        #resetBtn:active { background-color: var(--reset-button-active-bg); box-shadow: 2px 2px 0px var(--action-button-active-shadow); }
+
+
+        /* Result Area Styles */
+        #resultArea {
+            background-color: var(--result-area-bg); border: 2px dashed var(--result-area-border); border-radius: 16px; box-shadow: 4px 4px 0px var(--result-area-shadow); padding: 1.5rem; margin-top: 2rem; min-height: 150px; text-align: center; transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out, background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease; opacity: 0; transform: scale(0.9) rotate(-2deg); display: flex; flex-direction: column; align-items: center; justify-content: center;
+        }
+        #resultArea.visible { opacity: 1; transform: scale(1) rotate(0deg); animation: reveal 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards; }
+        #initialFeedback { font-size: 1.1rem; font-weight: 600; color: var(--result-text-color); margin-bottom: 1rem; transition: color 0.3s ease; line-height: 1.4; }
+        #twistExplanation { font-size: 1.2rem; font-weight: 700; margin-top: 0.5rem; color: var(--twist-text-color); background-color: rgba(255, 255, 255, 0.3); padding: 0.5rem 1rem; border-radius: 8px; }
+        #thinkingText { font-style: italic; color: var(--thinking-text-color); transition: color 0.3s ease; font-size: 1.1rem; margin-bottom: 1rem; }
+
+        /* Headings & Labels */
+        .question-heading { /* Class for question text */
+            font-size: 1.2rem; /* Adjusted size */
+            font-weight: 600;
+            color: var(--question-text-color);
+            margin-bottom: 1.5rem;
+            transition: color 0.3s ease;
+            line-height: 1.5;
+        }
+        .main-heading { color: var(--heading-color); transition: color 0.3s ease; padding-top: 1rem; /* Default padding */ }
+        .sub-heading { color: var(--subheading-color); transition: color 0.3s ease; font-size: 1.1rem; line-height: 1.6; margin-bottom: 1.5rem; }
+
+        /* Footer Styling */
+        .page-footer { text-align: center; padding: 1rem 0; margin-top: 1rem; font-size: 0.8rem; color: var(--footer-text-color); flex-shrink: 0; line-height: 1.5; transition: color 0.3s ease; }
+        .page-footer p { margin-bottom: 0.25rem; }
+
+        /* Theme Selector Styles */
+        .theme-selector-container { position: absolute; top: 1rem; right: 1rem; z-index: 10; }
+        .theme-selector-label { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border-width: 0; }
+        #themeSelector { padding: 0.4rem 0.8rem; border-radius: 8px; border: 2px solid var(--theme-selector-border); background-color: var(--theme-selector-bg); color: var(--theme-selector-text); font-weight: 500; cursor: pointer; box-shadow: 2px 2px 0px var(--theme-selector-border); transition: all 0.2s ease; vertical-align: middle; font-size: 0.8rem; }
+        #themeSelector:focus { outline: none; box-shadow: 2px 2px 0px var(--theme-selector-border), 0 0 0 3px var(--main-container-bg), 0 0 0 5px var(--theme-selector-border); }
+
+        /* Dark Theme Adjustments */
+        body[data-theme="cosmic-purple"] .main-heading svg,
+        body[data-theme="night-mode"] .main-heading svg { color: #F687B3; /* pink-400 */ }
+        body[data-theme="cosmic-purple"] .sub-heading,
+        body[data-theme="night-mode"] .sub-heading { color: #D1D5DB; }
+        body[data-theme="cosmic-purple"] #themeSelector:focus,
+        body[data-theme="night-mode"] #themeSelector:focus { box-shadow: 2px 2px 0px var(--theme-selector-border), 0 0 0 3px var(--main-container-bg), 0 0 0 5px var(--theme-selector-border); }
+        body[data-theme="cosmic-purple"] #twistExplanation,
+        body[data-theme="night-mode"] #twistExplanation { background-color: rgba(0, 0, 0, 0.2); color: #FFF; }
+
+
+        /* Hide class utility */
+        .hidden { display: none; }
+
+        /* Animation for result reveal */
+        @keyframes reveal { from { transform: scale(0.8) rotate(-5deg); opacity: 0; } to { transform: scale(1) rotate(0deg); opacity: 1; } }
+
+    </style>
+</head>
+<body class="p-4 md:p-6">
+
+    <div class="theme-selector-container">
+        <label for="themeSelector" class="theme-selector-label">Choose a Theme:</label>
+        <select id="themeSelector">
+            <option value="default">🎨 Default</option>
+            <option value="ocean-blue">🌊 Ocean Blue</option>
+            <option value="forest-green">🌲 Forest Green</option>
+            <option value="cosmic-purple">✨ Cosmic Purple</option>
+            <option value="sunny-yellow">☀️ Sunny Yellow</option>
+            <option value="candy-pink">🍬 Candy Pink</option>
+            <option value="night-mode">🌙 Night Mode</option>
+        </select>
+    </div>
+
+    <main>
+        <div class="main-container">
+            <h1 class="main-heading text-3xl sm:text-4xl font-bold text-center mb-4 tracking-tight flex items-center justify-center gap-3">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-9 h-9 text-pink-600">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 18v-5.25m0 0a6.01 6.01 0 001.5-.189m-1.5.189a6.01 6.01 0 01-1.5-.189m3.75 7.478a12.06 12.06 0 01-4.5 0m3.75 2.368a14.977 14.977 0 01-4.5 0m4.5 0v.75c0 .621-.504 1.125-1.125 1.125h-1.5c-.621 0-1.125-.504-1.125-1.125v-.75m3.75 0c.621 0 1.125.504 1.125 1.125v.75c0 .621-.504 1.125-1.125 1.125h-1.5c-.621 0-1.125-.504-1.125-1.125v-.75m-6.75-4.125a2.25 2.25 0 113.75 0 2.25 2.25 0 01-3.75 0zM6.75 19.5a2.25 2.25 0 002.25 2.25h1.5c.621 0 1.125-.504 1.125-1.125v-.75" />
+                </svg>
+                 Mind Trap Puzzles <span class="text-2xl">🤯</span>
+            </h1>
+
+            <p class="sub-heading text-center mb-8">Think you know the answer? These puzzles might trick you! 🤔 Choose carefully...</p>
+
+            <div id="puzzleArea">
+                <div id="puzzleCard" class="puzzle-card">
+                    <p id="questionText" class="question-heading">Puzzle text goes here...</p>
+                    <div id="choicesGrid" class="choices-grid">
+                        </div>
+                    <button id="submitBtn" class="action-button submit-button mt-6" disabled>Check Answer 🤔</button>
+                </div>
+            </div>
+
+            <div id="resultArea" class="hidden">
+                <p id="thinkingText">...</p>
+                <p id="initialFeedback"></p>
+                <p id="twistExplanation" class="hidden"></p>
+                <button id="nextBtn" class="action-button next-button mt-4 hidden">Next Puzzle 👉</button>
+                <button id="resetBtn" class="action-button reset-button mt-4 hidden">Play Again? 🔁</button>
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="page-footer">
+        <p>© 2025 ToolForge. All rights reserved.</p>
+        <p>Built with ❤️ by Anas.</p>
+    </footer>
+
+    <script>
+        // --- DOM Elements ---
+        const puzzleAreaDiv = document.getElementById('puzzleArea');
+        const puzzleCard = document.getElementById('puzzleCard');
+        const questionText = document.getElementById('questionText');
+        const choicesGrid = document.getElementById('choicesGrid');
+        const submitBtn = document.getElementById('submitBtn');
+        const resultArea = document.getElementById('resultArea');
+        const thinkingText = document.getElementById('thinkingText');
+        const initialFeedback = document.getElementById('initialFeedback');
+        const twistExplanation = document.getElementById('twistExplanation');
+        const nextBtn = document.getElementById('nextBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const themeSelector = document.getElementById('themeSelector');
+
+        // --- Game State ---
+        let currentPuzzleIndex = 0;
+        let selectedAnswerIndex = null; // Index of the button clicked
+        let score = 0; // Optional: track score
+
+        // --- Puzzle Data (Expanded List) ---
+        const puzzles = [
+            { question: "If you overtake the second person in a race, what position are you in?", options: ["1st Place 🥇", "2nd Place 🥈", "3rd Place 🥉"], obviousIndex: 0, correctIndex: 1, explanation: "You overtook the *second* person, so you take *their* place - second place!🥈" },
+            { question: "A farmer had 17 sheep. All but 9 died. How many sheep are left?", options: ["8 Sheep 🐑", "9 Sheep 🐑", "17 Sheep 🐑", "0 Sheep 🐑"], obviousIndex: 0, correctIndex: 1, explanation: "The question says 'All but 9 died', meaning 9 are left alive! 🐑" },
+            { question: "Which is heavier: a pound of feathers or a pound of bricks?", options: ["Feathers 🪶", "Bricks 🧱", "They weigh the same 🤔"], obviousIndex: 1, correctIndex: 2, explanation: "A pound is a pound, no matter what it's made of! They weigh the same. 🤔" },
+            { question: "Mary's father has five daughters: 1. Nana, 2. Nene, 3. Nini, 4. Nono. What is the name of the fifth daughter?", options: ["Nunu", "Mary", "Cannot be known", "Nuna"], obviousIndex: 0, correctIndex: 1, explanation: "Read carefully! The fifth daughter is Mary herself! 😉" },
+            { question: "How many months have 28 days?", options: ["Only February (1) 🗓️", "All Months (12) 🗓️", "Depends on Leap Year 🗓️"], obviousIndex: 0, correctIndex: 1, explanation: "Trick question! *All* 12 months have *at least* 28 days. 😉" },
+            { question: "What has an eye, but cannot see?", options: ["A Potato 🥔", "A Needle 🪡", "A Storm 🌀", "All of the above"], obviousIndex: 0, correctIndex: 3, explanation: "Potatoes have 'eyes', needles have an 'eye', and storms have an 'eye'! All fit. 👀" },
+            { question: "What is always in front of you but can’t be seen?", options: ["The Air 💨", "Your Nose👃", "The Future ✨"], obviousIndex: 0, correctIndex: 2, explanation: "The future is always ahead, but you can't see it yet! ✨" },
+            { question: "What can you catch, but not throw?", options: ["A Ball ⚾", "A Cold 🤧", "A Fish 🎣"], obviousIndex: 0, correctIndex: 1, explanation: "You can catch a cold, but you can't exactly throw it! 🤧" },
+            { question: "What has to be broken before you can use it?", options: ["A Promise 💔", "An Egg 🥚", "A Window 🪟"], obviousIndex: 2, correctIndex: 1, explanation: "You need to break an egg to cook or eat it! 🥚" },
+            { question: "What goes up but never comes down?", options: ["Smoke 💨", "Your Age 🎂", "A Balloon 🎈"], obviousIndex: 2, correctIndex: 1, explanation: "Your age only goes up! 🎂" },
+            { question: "A man looks at a painting in a museum and says, 'Brothers and sisters I have none, but that man's father is my father's son.' Who is in the painting?", options: ["His Father", "Himself", "His Son"], obviousIndex: 0, correctIndex: 2, explanation: "'My father's son' is himself (since he has no brothers). So, 'that man's father is me', meaning the man in the painting is his son! 👨‍👦" },
+            { question: "What question can you never answer yes to?", options: ["Are you asleep yet? 😴", "Is this statement false?", "Are you lying?🤥"], obviousIndex: 2, correctIndex: 0, explanation: "If you answer 'yes' to 'Are you asleep yet?', you clearly aren't asleep! 😴" },
+            { question: "What is full of holes but still holds water?", options: ["A Net 🥅", "A Sieve", "A Sponge 🧽"], obviousIndex: 0, correctIndex: 2, explanation: "A sponge is full of tiny holes but absorbs and holds water! 🧽" },
+            { question: "What can travel all around the world while staying in a corner?", options: ["An Airplane ✈️", "A Stamp ✉️", "The Internet 🌐"], obviousIndex: 0, correctIndex: 1, explanation: "A stamp stays in the corner of an envelope but travels worldwide! ✉️" },
+            { question: "What invention lets you look right through a wall?", options: ["X-Ray Specs 😎", "A Window 🪟", "A Telescope 🔭"], obviousIndex: 0, correctIndex: 1, explanation: "A window is literally an invention that lets you see through a wall! 🪟" },
+            { question: "What has one head, one foot, and four legs?", options: ["A Monster 👾", "A Bed 🛏️", "A Chair 🪑"], obviousIndex: 0, correctIndex: 1, explanation: "A bed has a headboard, a footboard, and four legs! 🛏️" },
+             { question: "If a plane crashes on the border between the USA and Canada, where do they bury the survivors?", options: ["USA 🇺🇸", "Canada 🇨🇦", "You don't bury survivors! 😅"], obviousIndex: 0, correctIndex: 2, explanation: "You don't bury survivors! They survived the crash! 😅" },
+             { question: "What word is spelled incorrectly in every single dictionary?", options: ["Misspell", "Incorrectly", "Dictionary"], obviousIndex: 0, correctIndex: 1, explanation: "The word 'incorrectly' is the one spelled 'incorrectly' in the dictionary (as itself). 😉" },
+             { question: "How much dirt is there in a hole that measures 2 feet by 3 feet by 4 feet?", options: ["24 cubic feet", "None", "Depends on the dirt type"], obviousIndex: 0, correctIndex: 1, explanation: "There's no dirt *in* a hole – it's empty! 🕳️" },
+             { question: "What can you hold in your right hand, but never in your left hand?", options: ["Your Left Elbow 💪", "A Secret 🤫", "Water 💧"], obviousIndex: 2, correctIndex: 0, explanation: "You can physically hold your left elbow with your right hand, but not with your left hand! 💪" }
+        ];
+
+        // --- Functions ---
+
+        /** Displays the current puzzle */
+        function displayPuzzle(index) {
+            if (index >= puzzles.length) {
+                showFinalScore();
+                return;
+            }
+
+            const puzzle = puzzles[index];
+            questionText.textContent = puzzle.question;
+            choicesGrid.innerHTML = '';
+            selectedAnswerIndex = null;
+            submitBtn.disabled = true;
+
+            puzzle.options.forEach((optionText, i) => {
+                const button = document.createElement('button');
+                button.className = 'choice-button';
+                button.dataset.index = i;
+
+                const textSpan = document.createElement('span');
+                textSpan.className = 'text-content';
+                textSpan.textContent = optionText;
+                button.appendChild(textSpan);
+
+                button.addEventListener('click', handleChoiceClick);
+                choicesGrid.appendChild(button);
+            });
+
+            puzzleAreaDiv.classList.remove('hidden');
+            resultArea.classList.add('hidden');
+            resultArea.classList.remove('visible');
+            nextBtn.classList.add('hidden');
+            resetBtn.classList.add('hidden');
+        }
+
+        /** Handles clicks on choice buttons */
+        function handleChoiceClick(event) {
+            const button = event.target.closest('.choice-button');
+            if (!button) return;
+
+            selectedAnswerIndex = parseInt(button.dataset.index);
+
+            const allButtons = choicesGrid.querySelectorAll('.choice-button');
+            allButtons.forEach(btn => btn.classList.remove('selected'));
+            button.classList.add('selected');
+
+            submitBtn.disabled = false;
+        }
+
+        /** Checks the selected answer and reveals the twist */
+        function checkAnswer() {
+            if (selectedAnswerIndex === null) return;
+
+            const puzzle = puzzles[currentPuzzleIndex];
+            const isCorrect = selectedAnswerIndex === puzzle.correctIndex;
+            const isObvious = selectedAnswerIndex === puzzle.obviousIndex;
+
+            const allButtons = choicesGrid.querySelectorAll('.choice-button');
+            allButtons.forEach(btn => btn.disabled = true);
+            submitBtn.disabled = true;
+
+            puzzleAreaDiv.classList.add('hidden');
+            resultArea.classList.remove('hidden');
+            thinkingText.style.display = 'block';
+            thinkingText.textContent = '🤔 Let\'s see...';
+            initialFeedback.textContent = '';
+            twistExplanation.textContent = '';
+            twistExplanation.classList.add('hidden');
+            resultArea.classList.remove('visible');
+
+            setTimeout(() => {
+                thinkingText.style.display = 'none';
+
+                if (isCorrect) {
+                    initialFeedback.textContent = "You saw through the trick! Clever! ✨";
+                    score++;
+                } else if (isObvious) {
+                    initialFeedback.textContent = "Aha! A classic mind trap! 😉";
+                } else {
+                    initialFeedback.textContent = "Not quite! Let's see the logic...";
+                }
+
+                setTimeout(() => {
+                    twistExplanation.textContent = `💡 The Twist: ${puzzle.explanation}`;
+                    twistExplanation.classList.remove('hidden');
+
+                    if (currentPuzzleIndex < puzzles.length - 1) {
+                        nextBtn.classList.remove('hidden');
+                    } else {
+                        initialFeedback.textContent += ` You completed the series! Final Score: ${score}/${puzzles.length}`;
+                        resetBtn.classList.remove('hidden');
+                    }
+
+                }, 1000);
+
+                resultArea.classList.add('visible');
+            }, 800);
+        }
+
+         /** Loads the next puzzle */
+        function loadNextPuzzle() {
+            currentPuzzleIndex++;
+            displayPuzzle(currentPuzzleIndex);
+        }
+
+         /** Shows final score */
+         function showFinalScore() {
+            puzzleAreaDiv.classList.add('hidden');
+            resultArea.classList.remove('hidden');
+            thinkingText.style.display = 'none';
+            initialFeedback.textContent = `🎉 You've completed all the puzzles! Final Score: ${score}/${puzzles.length} 🎉`;
+            twistExplanation.classList.add('hidden');
+            nextBtn.classList.add('hidden');
+            resetBtn.classList.remove('hidden');
+            resultArea.classList.add('visible');
+         }
+
+
+        /** Resets the game */
+        function resetGame() {
+            currentPuzzleIndex = 0;
+            score = 0;
+            selectedAnswerIndex = null;
+            displayPuzzle(currentPuzzleIndex);
+        }
+
+        // --- Theme Switching Logic (With localStorage) ---
+        function applyTheme(themeName) {
+            document.body.dataset.theme = themeName;
+            try { localStorage.setItem('mindTrapTheme', themeName); }
+            catch (e) { console.warn("Could not save theme preference:", e); }
+        }
+
+        function loadSavedTheme() {
+            let savedTheme = 'default';
+            try { savedTheme = localStorage.getItem('mindTrapTheme') || 'default'; }
+            catch (e) { console.warn("Could not load theme preference:", e); }
+            themeSelector.value = savedTheme;
+            applyTheme(savedTheme);
+        }
+
+        themeSelector.addEventListener('change', (event) => applyTheme(event.target.value));
+
+        // --- Event Listeners ---
+        submitBtn.addEventListener('click', checkAnswer);
+        nextBtn.addEventListener('click', loadNextPuzzle);
+        resetBtn.addEventListener('click', resetGame);
+
+        // --- Initial Load ---
+        loadSavedTheme();
+        resetGame(); // Initialize game state and display first puzzle
+
+    </script>
+
+</body>
+</html>
